@@ -1,0 +1,20 @@
+<div class="post">
+    <h3 class="post__title">{{post.title}}</h3>
+    <div class="post__body">{{post.body}}</div>
+   
+    <div class="post__like-section">
+        <div class="post__likes">
+            <i class="fa-solid fa-heart"></i>
+            <span class="post__likes--number">{{post.likes}}</span>
+        </div>
+        <div class="post__add-like">
+            <img *ngIf="!post.isLiked" (click)="like()" class="post__add-like--img" [src]="'assets/images/like-white-round-icon.png'" [alt]="'like'" />
+            <img  *ngIf="post.isLiked" class="post__add-like--img" [src]="'assets/images/like-blue-round-icon.png'" [alt]="'like'" />
+            <span>like</span>
+        </div>
+    </div>
+    
+</div>
+
+
+

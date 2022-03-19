@@ -1,0 +1,61 @@
+.post {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  background: rgb(161, 206, 209);
+  background: radial-gradient(circle, #a1ced1 0%, #eff2f5 100%);
+  width: 700px;
+  color: #000;
+  font-size: 18px;
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+  }
+  &__body {
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  &__like-section {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  &__likes {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    &--number {
+      font-size: 20px;
+    }
+    .fa-heart{
+      color: red;
+      font-size: 18px;
+      margin-right: 5px;
+    }
+  }
+  &__add-like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &--img {
+      width: 40px;
+      height: 40px;
+      margin-right: 5px;
+      &:hover {
+        width: 42px;
+        height: 42px;
+      }
+    }
+  }
+}
+
+:host {
+  display: block;
+  border: 1px solid #fff;
+  margin: 20px;
+  border-radius: 5px;
+}
