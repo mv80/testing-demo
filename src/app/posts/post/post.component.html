@@ -7,9 +7,8 @@
             <i class="fa-solid fa-heart"></i>
             <span class="post__likes--number">{{post.likes}}</span>
         </div>
-        <div class="post__add-like">
-            <img *ngIf="!post.isLiked" (click)="like()" class="post__add-like--img" [src]="'assets/images/like-white-round-icon.png'" [alt]="'like'" />
-            <img  *ngIf="post.isLiked" class="post__add-like--img" [src]="'assets/images/like-blue-round-icon.png'" [alt]="'like'" />
+        <div [ngClass]="{'liked' : post.isLiked}"  class="post__add-like">
+            <i (click)="like()" class="fas fa-thumbs-up"></i>
             <span>like</span>
         </div>
     </div>

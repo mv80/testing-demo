@@ -52,13 +52,13 @@ describe('PostComponent', () => {
     const titleText: string = po.title;
     expect(titleText).toEqual(hostComponent.post.title);
   });
-  fit('should show expected body', () => {
+  it('should show expected body', () => {
     const postBodyText = po.body;
     expect(postBodyText).toEqual(hostComponent.post.body);
   });
   it('should call host onUpdateLikes once click on add like icon', () => {
     const spy = spyOn(hostComponent, 'onUpdateLikes');
-    const addLikeIcon = hostFixture.nativeElement.querySelector('.post__add-like--img');
+    const addLikeIcon = po.likeBtn;
     addLikeIcon.click();
     hostFixture.detectChanges();
     expect(spy).toHaveBeenCalledWith(hostComponent.post.id);

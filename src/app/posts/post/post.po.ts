@@ -10,4 +10,7 @@ export class PO<T>{
     get body():string {
         return this.fixture.nativeElement.querySelector('.post__body').textContent;
     }
+    get likeBtn():string {
+        return this.fixture.nativeElement.querySelector('.fa-thumbs-up');
+    }
 }
