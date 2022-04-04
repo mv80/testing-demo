@@ -1,8 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { PostService } from '../services/post.service';
-
 import { PostListComponent } from './post-list.component';
-import { postsMock } from '../services/posts.mock';
 import { of } from 'rxjs';
 import { IPost } from '../post/post.model';
 
@@ -53,30 +51,53 @@ describe('PostListComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('should have a list of posts when loads', () => {
+  it('should set posts to an array of posts', () => {
     expect(component.posts.length).toBeGreaterThan(0);
   });
   describe('update likes', () => {
 
     it('should increase number of likes by one once updateLikes is called', async() => {
 
-      const mockPostId = component.posts[0].id;
-      const postLikesBeforeUpdate = component.posts[0].likes;
+      const mockPostId = 1;
+      const numOfPostLikesBeforeUpdate = component.posts[0].likes;
       postServiceMock.updatePostLikes.withArgs(mockPostId).and.returnValue(of(mockPostId));
   
       await component.updateLikes(1);
       
-      const postLikesAfterUpdate = component.posts[0].likes;
-      expect(postLikesAfterUpdate).toBeGreaterThan(postLikesBeforeUpdate);
-      expect(postLikesAfterUpdate).toEqual(postLikesBeforeUpdate + 1);
+      const numOfPostLikeAfterUpdate = component.posts.find(post => post.id ===1).likes;
+      expect(numOfPostLikeAfterUpdate).toBeGreaterThan(numOfPostLikesBeforeUpdate);
+      expect(numOfPostLikeAfterUpdate).toEqual(numOfPostLikesBeforeUpdate + 1);
     });
     it('should call postService with expected args once updates like is called', async() => {
-      const mockPostId = component.posts[0].id;
-      postServiceMock.updatePostLikes.withArgs(mockPostId).and.returnValue(of(mockPostId));
+      const mockPostId = 1;
+      postServiceMock.updatePostLikes.and.returnValue(of(mockPostId));
   
       await component.updateLikes(1);
   
       expect(postServiceMock.updatePostLikes).toHaveBeenCalledWith(mockPostId);
+    });
+    it('should set post is liked to true after call for updatePostLikes', async() => {
+     
+      const mockPostId = 1;
+      postServiceMock.updatePostLikes.withArgs(mockPostId).and.returnValue(of(mockPostId));
+  
+       await component.updateLikes(mockPostId);
+      
+      const post = component.posts.find(post => post.id === mockPostId);
+      expect(post.isLiked).toBeTrue();
+     
+    });
+    // same test  - using done callback
+    it('should set post is liked to true after call for updatePostLikes',(done) => {
+     
+      const mockPostId = 1;
+      const spy = postServiceMock.updatePostLikes.withArgs(mockPostId).and.returnValue(of(mockPostId));
+  
+      component.updateLikes(1).then(() => {
+        const post = component.posts.find(post => post.id ===1);
+        expect(post.isLiked).toBeTrue();
+        done();
+      });
     });
   });
  
