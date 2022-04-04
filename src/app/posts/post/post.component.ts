@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IPost } from './post.model';
 
-
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
@@ -11,9 +10,9 @@ export class PostComponent {
 
   @Input() post: IPost;
 
-  @Output() onPostLike = new EventEmitter();
+  @Output() onPostLike = new EventEmitter<number>();
  
-  public like(){
+  public like(): void {
     this.onPostLike.emit(this.post.id);
   }
 

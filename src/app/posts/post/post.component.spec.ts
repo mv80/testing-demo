@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PostComponent } from './post.component';
 import { IPost } from './post.model';
-import { PO } from './post.po';
+import { PostComponentPageObject } from './post.po';
 
 @Component({
   selector: `host-component`,
@@ -21,7 +21,7 @@ class HostComponent {
   public onUpdateLikes($event: number): void {
   }
 }
-let po;
+let pageObject;
 describe('PostComponent', () => {
   let hostComponent: HostComponent;
   let hostFixture: ComponentFixture<HostComponent>;
@@ -35,7 +35,7 @@ describe('PostComponent', () => {
 
   beforeEach(() => {
     hostFixture = TestBed.createComponent(HostComponent);
-    po = new PO<HostComponent>(hostFixture);
+    pageObject = new PostComponentPageObject<HostComponent>(hostFixture);
     hostComponent = hostFixture.componentInstance;
     hostFixture.detectChanges();
   });
@@ -49,16 +49,16 @@ describe('PostComponent', () => {
     expect(titleText).toEqual(hostComponent.post.title);
   });
   it('should show expected title', () => {
-    const titleText: string = po.title;
+    const titleText: string = pageObject.title;
     expect(titleText).toEqual(hostComponent.post.title);
   });
   it('should show expected body', () => {
-    const postBodyText = po.body;
+    const postBodyText = pageObject.body;
     expect(postBodyText).toEqual(hostComponent.post.body);
   });
   it('should call host onUpdateLikes once click on add like icon', () => {
     const spy = spyOn(hostComponent, 'onUpdateLikes');
-    const addLikeIcon = po.likeBtn;
+    const addLikeIcon = pageObject.likeBtn;
     addLikeIcon.click();
     hostFixture.detectChanges();
     expect(spy).toHaveBeenCalledWith(hostComponent.post.id);
