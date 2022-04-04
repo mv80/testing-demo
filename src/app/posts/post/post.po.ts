@@ -1,6 +1,6 @@
 import { ComponentFixture } from '@angular/core/testing';
 
-export class PO<T>{
+export class PostComponentPageObject<T>{
     constructor(private fixture : ComponentFixture<T>) {
     }
 
