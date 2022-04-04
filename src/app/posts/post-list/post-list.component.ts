@@ -22,11 +22,14 @@ export class PostListComponent implements OnInit {
       .subscribe((posts) => (this.posts = posts));
   }
   public async updateLikes(postId: number): Promise<void> {
-    const result = await this.postService.updatePostLikes(postId);
+   const post = this.posts.find(post => post.id === postId);
+   post.likes++;
+   post.isLiked = true;
+   
+   const updatedPost = await this.postService.updatePostLikes(post);
     this.posts = this.posts.map(post=> {
-      if(post.id === postId) {
-        post.isLiked = true; 
-        post.likes++;
+      if(post.id === updatedPost.id) {
+       post = updatedPost;
       }
       return post;
     })
