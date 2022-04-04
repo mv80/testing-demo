@@ -24,8 +24,9 @@ export class PostService {
     ) as Observable<IPost[]>;
   }
 
-  public updatePostLikes(postId: number): Promise<number> {
-    return of(postId).toPromise();
+  public updatePostLikes(post: IPost): Promise<IPost> {
+    return this.http.put<IPost>(`${BASE_URL}/${post.id}`,post)
+    .toPromise<IPost>();
   }
 
   private getRandomNumber(): number {
