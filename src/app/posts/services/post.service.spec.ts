@@ -10,8 +10,8 @@ import { NUMBER_OF_POSTS } from './posts.consts';
 describe('PostService', () => {
   let service: PostService;
   const httpClientServiceMock = jasmine.createSpyObj('HttpClient', [
-    'post',
     'get',
+    'put'
   ]);
 
   beforeEach(() => {
@@ -19,14 +19,16 @@ describe('PostService', () => {
       providers: [{ provide: HttpClient, useValue: httpClientServiceMock }],
     });
     service = TestBed.inject(PostService);
-    httpClientServiceMock.get.and.returnValue(of(postsMock));
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
+   //Testing Observable  - Subscribe and Assert method 
   describe('getPosts', () => {
+   beforeEach(() => {
+    httpClientServiceMock.get.and.returnValue(of([...postsMock]));
+   });
     it('should return number of posts as expected', (done) => {
       service
         .getPosts()
@@ -36,31 +38,42 @@ describe('PostService', () => {
           done();
         });
     });
-    it('should return post with is liked equal false and number of likes', (done) => {
-      const arrayWithOnePostItem = [{ ...postsMock[0] }];
-      httpClientServiceMock.get.and.returnValue(of(arrayWithOnePostItem));
-
+    it('should return post with is liked equal false and number of likes is set to a number', (done) => {
       service
         .getPosts()
         .pipe(take(1))
         .subscribe((postsData: IPost[]) => {
           const postItem = postsData[0];
-          expect(postItem.isLiked).toBeFalse();
+          expect(postsData.every(post => post.isLiked === false)).toBeTruthy();
+          expect(postsData.every(post => typeof post.likes === 'number')).toBeTruthy();
           expect(postItem.likes).toEqual(jasmine.any(Number));
           done();
         });
     });
   });
+  // Testing Promises 
   describe('updatePostLikes', () => {
-    it('should return the post id once called', async() => {
-      const mockPostId = 1;
-      const result = await service.updatePostLikes(mockPostId);
-      expect(result).toEqual(mockPostId);
+    const mockPostId = 1;
+    const postToUpdate = postsMock.find(post => post.id === mockPostId) as IPost;
+    const expectedResult = postsMock.find(post => post.id === mockPostId) as IPost;
+    let spy;
+    beforeEach(() => {
+      spy = httpClientServiceMock.put.and.returnValue(postToUpdate);
+    })
+    // 2 options for writing
+    //using async await 
+    it('should return the updated post object once called', async() => {
+      const postToUpdate = postsMock.find(post => post.id === mockPostId) as IPost;
+      const expectedResult = postsMock.find(post => post.id === mockPostId) as IPost;
+      const result = await service.updatePostLikes(postToUpdate);
+      
+      expect(result).toEqual(expectedResult);
     });
+     //using fakeAsync and then  
     it('should return the post id once called', fakeAsync(() => {
-      const mockPostId = 1;
-      service.updatePostLikes(mockPostId).then((postId) => {
-        expect(postId).toEqual(mockPostId);
+      service.updatePostLikes(postToUpdate).then((result) => {
+        
+        expect(result).toEqual(expectedResult);
       });
     }));
   });
