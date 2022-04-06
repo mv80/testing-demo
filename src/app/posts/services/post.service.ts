@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { IPost } from '../post/post.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IPost } from '../post/post.model';
 import { BASE_URL, NUMBER_OF_POSTS } from './posts.consts';
 
 @Injectable({
@@ -25,6 +25,8 @@ export class PostService {
   }
 
   public updatePostLikes(post: IPost): Promise<IPost> {
+    post.likes++;
+    post.isLiked = true;
     return this.http.put<IPost>(`${BASE_URL}/${post.id}`,post)
     .toPromise<IPost>();
   }

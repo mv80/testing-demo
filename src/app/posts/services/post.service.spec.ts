@@ -4,8 +4,9 @@ import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { IPost } from '../post/post.model';
 import { PostService } from './post.service';
-import { postsMock } from './posts.mock';
 import { NUMBER_OF_POSTS } from './posts.consts';
+import { postsMock } from './posts.mock';
+
 
 describe('PostService', () => {
   let service: PostService;
@@ -38,6 +39,7 @@ describe('PostService', () => {
           done();
         });
     });
+   
     it('should return post with is liked equal false and number of likes is set to a number', (done) => {
       service
         .getPosts()
@@ -50,30 +52,49 @@ describe('PostService', () => {
           done();
         });
     });
+
+    it('should call httpClientServiceMock get', (done) => {
+      service
+        .getPosts()
+        .pipe(take(1))
+        .subscribe(() => {
+          expect(httpClientServiceMock.get).toHaveBeenCalled();
+          done();
+        });
+    });
   });
   // Testing Promises 
   describe('updatePostLikes', () => {
-    const mockPostId = 1;
-    const postToUpdate = postsMock.find(post => post.id === mockPostId) as IPost;
-    const expectedResult = postsMock.find(post => post.id === mockPostId) as IPost;
-    let spy;
+   
+    const postToUpdate = {
+      userId: 1,
+      id: 1,
+      title: 'post 1 title',
+      body: 'post 1 body',
+      isLiked: false,
+      likes: 100
+    } as IPost;
+    
+    const updatedPost = {...postToUpdate};
+    updatedPost.isLiked = true;
+    updatedPost.likes++; 
+
+    let httpPutSpy;
+    
     beforeEach(() => {
-      spy = httpClientServiceMock.put.and.returnValue(postToUpdate);
+      httpPutSpy = httpClientServiceMock.put.and.returnValue(of(updatedPost));
     })
     // 2 options for writing
     //using async await 
     it('should return the updated post object once called', async() => {
-      const postToUpdate = postsMock.find(post => post.id === mockPostId) as IPost;
-      const expectedResult = postsMock.find(post => post.id === mockPostId) as IPost;
       const result = await service.updatePostLikes(postToUpdate);
-      
-      expect(result).toEqual(expectedResult);
+      expect(result).toEqual(updatedPost);
     });
      //using fakeAsync and then  
-    it('should return the post id once called', fakeAsync(() => {
-      service.updatePostLikes(postToUpdate).then((result) => {
-        
-        expect(result).toEqual(expectedResult);
+    it('should call http service put function with updated object', fakeAsync(() => {
+      const url = `https://jsonplaceholder.typicode.com/posts/${postToUpdate.id}`
+      service.updatePostLikes(postToUpdate).then(() => {
+        expect(httpPutSpy).toHaveBeenCalledWith(url,postToUpdate);
       });
     }));
   });
