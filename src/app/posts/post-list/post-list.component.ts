@@ -22,6 +22,7 @@ export class PostListComponent implements OnInit {
   }
   public async updateLikes(postId: number): Promise<void> {
    const post = this.posts.find(post => post.id === postId);
+
    const updatedPost = await this.postService.updatePostLikes(post);
     this.posts = this.posts.map(post=> {
       if(post.id === updatedPost.id) {

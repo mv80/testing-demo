@@ -12,7 +12,8 @@ export class PostService {
   constructor(private http: HttpClient) {}
 
   public getPosts(): Observable<IPost[]> {
-    return this.http.get<IPost[]>(BASE_URL).pipe(
+    return this.http.get<IPost[]>(BASE_URL)
+    .pipe(
       map((posts) => posts.splice(0, NUMBER_OF_POSTS)),
       map((posts: IPost[]) => {
         return posts.map((post) => {
