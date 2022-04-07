@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { IPost } from '../post/post.model';
 import { PostService } from '../services/post.service';
@@ -23,9 +22,6 @@ export class PostListComponent implements OnInit {
   }
   public async updateLikes(postId: number): Promise<void> {
    const post = this.posts.find(post => post.id === postId);
-   post.likes++;
-   post.isLiked = true;
-   
    const updatedPost = await this.postService.updatePostLikes(post);
     this.posts = this.posts.map(post=> {
       if(post.id === updatedPost.id) {
