@@ -84,18 +84,26 @@ describe('PostService', () => {
     beforeEach(() => {
       httpPutSpy = httpClientServiceMock.put.and.returnValue(of(updatedPost));
     })
-    // 2 options for writing
+    // 3 options for writing
     //using async await 
     it('should return the updated post object once called', async() => {
       const result = await service.updatePostLikes(postToUpdate);
       expect(result).toEqual(updatedPost);
     });
-     //using fakeAsync and then  
+     //using fakeAsync  
     it('should call http service put function with updated object', fakeAsync(() => {
       const url = `https://jsonplaceholder.typicode.com/posts/${postToUpdate.id}`
       service.updatePostLikes(postToUpdate).then(() => {
         expect(httpPutSpy).toHaveBeenCalledWith(url,postToUpdate);
       });
     }));
+    //using done 
+    it('should call http service put function with updated object', (done) => {
+      const url = `https://jsonplaceholder.typicode.com/posts/${postToUpdate.id}`
+      service.updatePostLikes(postToUpdate).then(() => {
+        expect(httpPutSpy).toHaveBeenCalledWith(url,postToUpdate);
+        done();
+      });
+    });
   });
 });
