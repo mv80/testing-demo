@@ -32,15 +32,12 @@ describe('PostComponent', () => {
     })
     .compileComponents();
   }));
-
   beforeEach(() => {
     hostFixture = TestBed.createComponent(HostComponent);
     pageObject = new PostComponentPageObject<HostComponent>(hostFixture);
     hostComponent = hostFixture.componentInstance;
     hostFixture.detectChanges();
   });
-
- 
   it('should create', () => {
     expect(hostComponent).toBeTruthy();
   });
@@ -52,16 +49,23 @@ describe('PostComponent', () => {
     const titleText: string = pageObject.title;
     expect(titleText).toEqual(hostComponent.post.title);
   });
-  it('should show expected body', () => {
-    const postBodyText = pageObject.body;
-    expect(postBodyText).toEqual(hostComponent.post.body);
-  });
-  it('should call host onUpdateLikes once click on add like icon', () => {
-    const spy = spyOn(hostComponent, 'onUpdateLikes');
-    const addLikeIcon = pageObject.likeBtn;
-    addLikeIcon.click();
-    hostFixture.detectChanges();
-    expect(spy).toHaveBeenCalledWith(hostComponent.post.id);
-  });
- 
+
+  describe('click on like button',() => {
+    afterEach(() => {
+      hostComponent.post.isLiked = false;
+    });
+    it('should call host onUpdateLikes once click on add like icon', () => {
+      const spy = spyOn(hostComponent, 'onUpdateLikes');
+      const likeIcon = pageObject.likeBtn;
+      likeIcon.click();
+      hostFixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(hostComponent.post.id);
+    });
+
+    it('should add class "liked" once post isLiked is true', () => {
+      hostComponent.post.isLiked = true; 
+      hostFixture.detectChanges();
+      expect(pageObject.addLikeSection.classList.contains('liked')).toBeTrue();
+    });
+  })
 });
