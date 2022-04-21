@@ -9,8 +9,8 @@ import { PostComponentPageObject } from './post.po';
   template: `<app-post (onPostLike)="onUpdateLikes($event)" [post]="post"></app-post>`
 })
 class HostComponent {
-  public post :IPost = {
-    id:1,
+  public post: IPost = {
+    id: 1,
     title: 'post 1 title',
     body: 'post 1 body',
     isLiked: false,
@@ -28,9 +28,9 @@ describe('PostComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostComponent, HostComponent ]
+      declarations: [PostComponent, HostComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
   beforeEach(() => {
     hostFixture = TestBed.createComponent(HostComponent);
@@ -41,16 +41,18 @@ describe('PostComponent', () => {
   it('should create', () => {
     expect(hostComponent).toBeTruthy();
   });
-  it('should show expected title', () => {
-    const titleText = hostFixture.nativeElement.querySelector('.post__title').textContent;
-    expect(titleText).toEqual(hostComponent.post.title);
-  });
+
+  describe('title', () => {
+    it('should show expected title', () => {
+      const titleText = hostFixture.nativeElement.querySelector('.post__title').textContent;
+      expect(titleText).toEqual(hostComponent.post.title);
+    });
+  })
   it('should show expected title', () => {
     const titleText: string = pageObject.title;
     expect(titleText).toEqual(hostComponent.post.title);
   });
-
-  describe('click on like button',() => {
+  describe('click on like button', () => {
     afterEach(() => {
       hostComponent.post.isLiked = false;
     });
@@ -63,7 +65,7 @@ describe('PostComponent', () => {
     });
 
     it('should add class "liked" once post isLiked is true', () => {
-      hostComponent.post.isLiked = true; 
+      hostComponent.post.isLiked = true;
       hostFixture.detectChanges();
       expect(pageObject.addLikeSection.classList.contains('liked')).toBeTrue();
     });
