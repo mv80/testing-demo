@@ -5,15 +5,15 @@ export class PostComponentPageObject<T>{
     }
 
     get title():string {
-        return this.fixture.nativeElement.querySelector('.post__title').textContent;
+        return this.fixture.nativeElement.querySelector('[automation-id="post-title"]').textContent;
     }
     get body():string {
-        return this.fixture.nativeElement.querySelector('.post__body').textContent;
+        return this.fixture.nativeElement.querySelector('[automation-id="post-body"]').textContent;
     }
     get likeBtn(): HTMLElement {
-        return this.fixture.nativeElement.querySelector('.fa-thumbs-up');
+        return this.fixture.nativeElement.querySelector('[automation-id="post-like-icon"]');
     }
     get addLikeSection(): HTMLElement {
-        return this.fixture.nativeElement.querySelector('.post__add-like');
+        return this.fixture.nativeElement.querySelector('[automation-id="add-like-section"]');
     }
 }
