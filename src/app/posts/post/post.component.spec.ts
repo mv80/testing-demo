@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserModule } from '@angular/platform-browser';
 import { PostComponent } from './post.component';
 import { IPost } from './post.model';
 import { PostComponentPageObject } from './post.po';
-
 @Component({
   selector: `host-component`,
   template: `<app-post (onPostLike)="onUpdateLikes($event)" [post]="post"></app-post>`
@@ -28,7 +28,8 @@ describe('PostComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PostComponent, HostComponent]
+      declarations: [PostComponent, HostComponent],
+      providers: [BrowserModule]
     })
       .compileComponents();
   }));

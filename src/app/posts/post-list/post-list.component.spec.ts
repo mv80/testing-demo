@@ -3,6 +3,7 @@ import {
   ComponentFixture,
   fakeAsync, flush, TestBed
 } from '@angular/core/testing';
+import { BrowserModule } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { PostComponent } from '../post/post.component';
 import { IPost } from '../post/post.model';
@@ -40,7 +41,7 @@ describe('PostListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PostListComponent, PostComponent],
-      providers: [{ provide: PostService, useFactory: () => postServiceMock }],
+      providers: [{ provide: PostService, useFactory: () => postServiceMock }, BrowserModule,],
     }).compileComponents();
   }));
 
