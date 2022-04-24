@@ -34,7 +34,7 @@ describe('PostComponent', () => {
   }));
   beforeEach(() => {
     hostFixture = TestBed.createComponent(HostComponent);
-    pageObject = new PostComponentPageObject<HostComponent>(hostFixture);
+    pageObject = new PostComponentPageObject<HostComponent>(hostFixture.nativeElement);
     hostComponent = hostFixture.componentInstance;
     hostFixture.detectChanges();
   });

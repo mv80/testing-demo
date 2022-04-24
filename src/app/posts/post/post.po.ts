@@ -1,19 +1,21 @@
-import { ComponentFixture } from '@angular/core/testing';
 
 export class PostComponentPageObject<T>{
-    constructor(private fixture : ComponentFixture<T>) {
+    constructor(private element : HTMLElement) {
     }
-
+    
+    get numberOfLikes(): string {
+        return this.element.querySelector('[automation-id="likes-number"]').textContent;
+    }
     get title():string {
-        return this.fixture.nativeElement.querySelector('[automation-id="post-title"]').textContent;
+        return this.element.querySelector('[automation-id="post-title"]').textContent;
     }
     get body():string {
-        return this.fixture.nativeElement.querySelector('[automation-id="post-body"]').textContent;
+        return this.element.querySelector('[automation-id="post-body"]').textContent;
     }
     get likeBtn(): HTMLElement {
-        return this.fixture.nativeElement.querySelector('[automation-id="post-like-icon"]');
+        return this.element.querySelector('[automation-id="post-like-icon"]');
     }
     get addLikeSection(): HTMLElement {
-        return this.fixture.nativeElement.querySelector('[automation-id="add-like-section"]');
+        return this.element.querySelector('[automation-id="add-like-section"]');
     }
 }
