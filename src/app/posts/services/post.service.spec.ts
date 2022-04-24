@@ -25,11 +25,10 @@ describe('PostService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-   //Testing Observable  - Subscribe and Assert method 
   describe('getPosts', () => {
-   beforeEach(() => {
-    httpClientServiceMock.get.and.returnValue(of([...postsMock]));
-   });
+    beforeEach(() => {
+      httpClientServiceMock.get.and.returnValue(of([...postsMock]));
+    });
     it('should return number of posts as expected', (done) => {
       service
         .getPosts()
@@ -39,7 +38,7 @@ describe('PostService', () => {
           done();
         });
     });
-   
+
     it('should return post with is liked equal false and number of likes is set to a number', (done) => {
       service
         .getPosts()
@@ -65,7 +64,7 @@ describe('PostService', () => {
   });
   // Testing Promises 
   describe('updatePostLikes', () => {
-   
+
     const postToUpdate = {
       userId: 1,
       id: 1,
@@ -74,34 +73,35 @@ describe('PostService', () => {
       isLiked: false,
       likes: 100
     } as IPost;
-    
-    const updatedPost = {...postToUpdate};
+
+    const updatedPost = { ...postToUpdate };
     updatedPost.isLiked = true;
-    updatedPost.likes++; 
+    updatedPost.likes++;
 
     let httpPutSpy;
-    
+
     beforeEach(() => {
       httpPutSpy = httpClientServiceMock.put.and.returnValue(of(updatedPost));
     })
     // 3 options for writing
     //using async await 
-    it('should return the updated post object once called', async() => {
+    it('should return the updated post object once called', async () => {
       const result = await service.updatePostLikes(postToUpdate);
       expect(result).toEqual(updatedPost);
     });
-     //using fakeAsync  
+
+    //using fakeAsync  
     it('should call http service put function with updated object', fakeAsync(() => {
       const url = `https://jsonplaceholder.typicode.com/posts/${postToUpdate.id}`
       service.updatePostLikes(postToUpdate).then(() => {
-        expect(httpPutSpy).toHaveBeenCalledWith(url,postToUpdate);
+        expect(httpPutSpy).toHaveBeenCalledWith(url, postToUpdate);
       });
     }));
     //using done 
     it('should call http service put function with updated object', (done) => {
       const url = `https://jsonplaceholder.typicode.com/posts/${postToUpdate.id}`
       service.updatePostLikes(postToUpdate).then(() => {
-        expect(httpPutSpy).toHaveBeenCalledWith(url,postToUpdate);
+        expect(httpPutSpy).toHaveBeenCalledWith(url, postToUpdate);
         done();
       });
     });
