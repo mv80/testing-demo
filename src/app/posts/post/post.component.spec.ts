@@ -6,10 +6,10 @@ import { IPost } from './post.model';
 import { PostComponentPageObject } from './post.po';
 @Component({
   selector: `host-component`,
-  template: `<app-post (onPostLike)="onUpdateLikes($event)" [post]="post"></app-post>`
+  template: `<app-post (onPostLike)="onUpdateLikes($event)" [post]="postItem"></app-post>`
 })
 class HostComponent {
-  public post: IPost = {
+  public postItem: IPost = {
     id: 1,
     title: 'post 1 title',
     body: 'post 1 body',
@@ -22,6 +22,7 @@ class HostComponent {
   }
 }
 let pageObject;
+
 describe('PostComponent', () => {
   let hostComponent: HostComponent;
   let hostFixture: ComponentFixture<HostComponent>;
@@ -42,33 +43,37 @@ describe('PostComponent', () => {
   it('should create', () => {
     expect(hostComponent).toBeTruthy();
   });
-
-  describe('title', () => {
-    it('should show expected title', () => {
-      const titleText = hostFixture.nativeElement.querySelector('.post__title').textContent;
-      expect(titleText).toEqual(hostComponent.post.title);
+  //test that element is displayed correctly
+    describe('post title', () => {
+      it('should show expected title', () => {
+        const titleText = hostFixture.nativeElement.querySelector('.post__title').textContent;
+        expect(titleText).toEqual(hostComponent.postItem.title);
+      });
+      //same test - using page object
+      it('should show expected title', () => {
+        const titleText: string = pageObject.title;
+        expect(titleText).toEqual(hostComponent.postItem.title);
+      });
     });
-  })
-  it('should show expected title', () => {
-    const titleText: string = pageObject.title;
-    expect(titleText).toEqual(hostComponent.post.title);
-  });
-  describe('click on like button', () => {
+ 
+ describe('click on like icon', () => {
     afterEach(() => {
-      hostComponent.post.isLiked = false;
+      hostComponent.postItem.isLiked = false;
     });
+    //check that event emitter has fired
     it('should call host onUpdateLikes once click on add like icon', () => {
       const spy = spyOn(hostComponent, 'onUpdateLikes');
       const likeIcon = pageObject.likeBtn;
       likeIcon.click();
       hostFixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith(hostComponent.post.id);
+      expect(spy).toHaveBeenCalledWith(hostComponent.postItem.id);
     });
-
-    it('should add class "liked" once post isLiked is true', () => {
-      hostComponent.post.isLiked = true;
+    // check that element has css class 
+    it('should add CSS class "liked" once post isLiked is true', () => {
+      hostComponent.postItem.isLiked = true;
       hostFixture.detectChanges();
       expect(pageObject.addLikeSection.classList.contains('liked')).toBeTrue();
     });
-  })
+  });
+
 });
